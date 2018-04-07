@@ -22,6 +22,7 @@ I welcome PullRequest and / or Forks!
 | /current  | close/update  | <close: none> : <update : = "1" => Closes Report :"2" => report not checkable >  | none | rc.current |
 | /notify  | none  | none | none | rc.notify |
 | /rpurge | none | none | none | rc.rpurge |
+| ------------- | ------------- | ------------- | ------------- | ------------- |
 #Commands:
   /report => Reports a player
   /reports => list all reports
