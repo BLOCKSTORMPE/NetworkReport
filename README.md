@@ -1,8 +1,8 @@
-# NetworkNotify
+# ReportCore
 Your All-In-One Report-System!
 
 => This plugin was made for the RevengerMC Network, you are allowed to modify the main file of this plugin, but you are not allowed to claim this plugin or any parts of it as yours. => You are not allowed to change the name and / or the author of this plugin, it has to identifiable as AIOMod. => with using this plugin or any parts of it, you agree with the points above!
-#Important
+# Important
 This plugin is under development,so please create issues if you found bugs.
 I welcome PullRequest and / or Forks!
 
@@ -12,7 +12,7 @@ I welcome PullRequest and / or Forks!
 - [x] Presetted Report-Reasons
 - [x] Command to edit the report currently working on
 
-#Commands 
+# Commands 
 
 | Command  | First Argument | Second Argument | Third Argument | Permission | 
 | ------------- | ------------- | ------------- | ------------- | ------------- |
@@ -23,7 +23,7 @@ I welcome PullRequest and / or Forks!
 | /notify  | none  | none | none | rc.notify |
 | /rpurge | none | none | none | rc.rpurge |
 
-#Command details
+# Command details
   - /report => Reports a player
   - /reports => list all reports
   - /claim => Claim a report as yours and jump to the reported player
