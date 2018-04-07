@@ -24,12 +24,12 @@ I welcome PullRequest and / or Forks!
 | /rpurge | none | none | none | rc.rpurge |
 
 #Command details
-  /report => Reports a player
-  /reports => list all reports
-  /claim => Claim a report as yours and jump to the reported player
-  /current => edit your current report
-  /notify => Toggle Report Notifications*
-  /rpurge => Deletes all reports
+  - /report => Reports a player
+  - /reports => list all reports
+  - /claim => Claim a report as yours and jump to the reported player
+  - /current => edit your current report
+  - /notify => Toggle Report Notifications*
+  - /rpurge => Deletes all reports
   
 * This plugin is needed for the AIOMod system, which can be found on my github account to.
 
