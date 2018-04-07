@@ -1,0 +1,20 @@
+name: ReportCore
+author: Blockstorm
+version: 1.0
+api: 3.0.0-ALPHA11
+main: RC\Main
+commands:
+  notify:
+    description: Turns system notifications on and off
+  report:
+    description: Report a player
+  reports:
+    description: get a list of reports
+  reportinfo:
+    description: get informations about a report
+  claim:
+    description: claim a report
+  current:
+    description: Aktuelle Report-Informationen
+  rpurge:
+    description: Lösche alle Reports
