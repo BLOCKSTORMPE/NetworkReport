@@ -25,8 +25,9 @@ class Main extends PluginBase implements Listener{
  }
 
 	public function onEnable(){
+		$oldreports = scandir("/ReportCore/Reports/");
 		$this->getServer()->getPluginManager()->registerEvents($this, $this);
-		#$this->getServer()->schedule
+		$this->getServer()->scheduleRepeatingTask(new Check($this), $oldreports);
 		}
 		public function onCommand(CommandSender $sender, Command $cmd, string $label, array $args): bool{
 			if(strtolower($cmd) == "notify"){
@@ -229,4 +230,45 @@ public function onPacketR(DataPacketReceiveEvent $event){
 			}
 		}
 	}**/
+}
+class Check extends PluginTask {
+    
+    public function __construct($plugin, $oldreports) {
+        $this->plugin = $plugin;
+        $this->oldreports = $oldreports;
+        parent::__construct($plugin);
+    }
+    
+    public function onRun($tick) {
+        $new  = scandir("/ReportCore/Reports/");
+        $tobc = array_diff($new, $this->oldreports);
+        if ($tobc !== []) {
+            foreach ($tobc as $repfile) {
+                $rep = yaml_parse_file("/ReportCore/Reports/" . $repfile);
+                foreach ($this->plugin->getServer()->getOnlinePlayers() as $p) {
+                    if ($p->hasPermission("rc.notify")) {
+                        foreach($this->getServer()->getOnlinePlayers() as $p){
+										if(file_exists("/ReportCore/Notify/".$p->getName().".yml")){
+										$tcfg = new Config("/ReportCore/Notify/".$p->getName().".yml", Config::YAML);
+										if($tcfg->get("Notify") == true){
+											$p->sendMessage("§c".$rcfg->get("Reported")." §7wurde wegen §5 ".$rcfg->get("Grund")."§cgemeldet");
+										}
+									}
+								}
+                    }
+                }
+                $this->plugin->getLogger()->info($this->plugin->prefix . "§6" . $rep["Spieler"] . " §ahat jemanden Reportet: /report read");
+            }
+        }
+        $this->oldreports = $new;
+        foreach ($this->plugin->getServer()->getOnlinePlayers() as $reporter) {
+            $name = $reporter->getName();
+            
+            if (!isset($this->plugin->report[$name])) {
+                $this->plugin->report[$name] = 0;
+            }
+            
+            
+        }
+    }
 }
