@@ -31,7 +31,7 @@ class Main extends PluginBase implements Listener{
 		public function onCommand(CommandSender $sender, Command $cmd, string $label, array $args): bool{
 			if(strtolower($cmd) == "notify"){
 				if($sender instanceof Player){
-					if($sender->hasPermission("system.notify")){
+					if($sender->hasPermission("rc.notify")){
 						$tcfg = new Config("/UniverseMC/Notify/".$sender->getName().".yml", Config::YAML);
 						if($tcfg->get("Notify") == true){
 							$tcfg->set("Notify", false);
@@ -52,12 +52,12 @@ $tcfg->save();
 					if(empty($args[0]) || empty($args[1])){
 						$sender->sendMessage($this->reportPrefix ."§cSyntax Fehler. Richtig: /report [Spieler] <Grund>");
 					}else{
-						if(file_exists("/UniverseMC/Spieler/".$args[0].".yml")){
-							$tconfig = new Config("/UniverseMC/Jump/".$args[0].".yml", Config::YAML);
+						if(file_exists("/ReportCore/Spieler/".$args[0].".yml")){
+							$tconfig = new Config("/Jump/".$args[0].".yml", Config::YAML);
 							if($tconfig->get("Status") == "Online"){
 								if($args[1] == "Hacking" || $args[1] == "Teaming" || $args[1] == "Bugusing" || $args[1] == "Wortwahl" || $args[1] == "Werbung" || $args[1] == "Sonstiges"){
 									$reports = 0;
-									$rcfg = new Config("/UniverseMC/Reports/".self::randomString().".yml", Config::YAML);
+									$rcfg = new Config("/ReportCore/Reports/".self::randomString().".yml", Config::YAML);
 									$rcfg->set("Reporter", $sender->getName());
 									$rcfg->set("Reported", $args[0]);
 									$rcfg->set("Grund", $args[1]);
@@ -66,8 +66,8 @@ $tcfg->save();
 									$rcfg->save();
 									$sender->sendMessage($this->reportPrefix ."§aDein Report wird bald von einem Moderator bearbeitet.Bitte habe etwas geduld");
 									foreach($this->getServer()->getOnlinePlayers() as $p){
-										if(file_exists("/UniverseMC/Notify/".$p->getName().".yml")){
-										$tcfg = new Config("/UniverseMC/Notify/".$p->getName().".yml", Config::YAML);
+										if(file_exists("/ReportCore/Notify/".$p->getName().".yml")){
+										$tcfg = new Config("/ReportCore/Notify/".$p->getName().".yml", Config::YAML);
 										if($tcfg->get("Notify") == true){
 											$p->sendMessage($this->reportPrefix ."§c".$rcfg->get("Reported")." §7wurde wegen §5 ".$rcfg->get("Grund")."§cReportet");
 										}
@@ -87,7 +87,7 @@ $tcfg->save();
 		}
 		if(strtolower($cmd == "current")){
 			if($sender instanceof Player){
-				if($sender->hasPermission("universe.notify")){
+				if($sender->hasPermission("rc.current")){
 					if(empty($args[0]) || empty($args[1])){
 						$sender->sendMessage($this->reportPrefix ."§cSyntax Error: Fehlende Argumente§7[§4Error #C02A§7]");
 						$sender->sendMessage($this->reportPrefix ."§b=-=-=- Report-Hilfemenu für §c/current §b=-=-=-");
@@ -95,13 +95,13 @@ $tcfg->save();
 						$sender->sendMessage($this->reportPrefix ."§c/report update [ID] §6- §aUpdate den Status des aktuellen Reports§7[IDs: §e1 = Offen, 2 = Nicht nachprüfbar§7]");
 						$sender->sendMessage($this->reportPrefix ."§b=-=-=- Report-Hilfemenu für §c/current §b=-=-=-");
 					}else{
-					$jumper1 = new Config("/UniverseMC/Notify/".$sender->getName().".yml", Config::YAML);
+					$jumper1 = new Config("/ReportCore/Notify/".$sender->getName().".yml", Config::YAML);
 					if($jumper1->get("Report") != null){
 						$reportid = $jumper1->get("Report");
 						$reportconfig = new Config("/UniverseMC/Reports/".$reportid.".yml", Config::YAML);
 						switch($args[0]){
 							case "close":
-								unlink("/UniverseMC/Reports/".$reportid.".yml");
+								unlink("/ReportCore/Reports/".$reportid.".yml");
 								$sender->sendMessage($this->reportPrefix ."§cDer Report wurde geschlossen. Du wirst nun auf die Lobby zurückgesendet");
 								$sender->transfer("blockstorm.tk", "19132");
 							break;
@@ -130,18 +130,18 @@ $tcfg->save();
 	}
 	if(strtolower($cmd == "rpurge")){
 		if($sender instanceof Player){
-			if($sender->hasPermission("universe.rpurge")){
-				unlink("/UniverseMC/Reports/*.*");
+			if($sender->hasPermission("rc.rpurge")){
+				unlink("/ReportCore/Reports/*.*");
 				$sender->sendMessage($this->reportPrefix ."§cAlle Reports wurden gelöscht");
 			}
 		}
 	}
 		if(strtolower($cmd == "claim")){
 			if($sender instanceof Player){
-				if($sender->hasPermission("universe.notify")){
-					if(file_exists("/UniverseMC/Reports/".$args[0].".yml")){
-						$report = new Config("/UniverseMC/Reports/".$args[0].".yml", Config::YAML);
-						$jumper = new Config("/UniverseMC/Notify/".$sender->getName().".yml", Config::YAML);
+				if($sender->hasPermission("rc.notify")){
+					if(file_exists("/ReportCore/Reports/".$args[0].".yml")){
+						$report = new Config("/ReportCore/Reports/".$args[0].".yml", Config::YAML);
+						$jumper = new Config("/ReportCore/Notify/".$sender->getName().".yml", Config::YAML);
 						if($report->get("Status") == "Offen"){
 							$jumper->set("Report", $args[0]);
 							$jumper->set("ReportModus", true);
@@ -151,7 +151,7 @@ $tcfg->save();
 							$report->save();
 
 $sender->sendMessage($this->reportPrefix ."§cDu hast den Report §e".$args[0]." §cübernommen");
-$config = new Config("/UniverseMC/Reports/".$args[0].".yml", Config::YAML);
+$config = new Config("/ReportCore/Reports/".$args[0].".yml", Config::YAML);
 							$sender->sendMessage($this->reportPrefix ."§b=-=-= §cReport Informationen für ".$args[0]." §b=-=-=");
 							$sender->sendMessage($this->reportPrefix ."§cReporter: §5".$config->get("Reporter")."");
 							$sender->sendMessage($this->reportPrefix ."§cReported: §5".$config->get("Reported")."");
@@ -173,8 +173,8 @@ $stringer = str_replace(":als", $report->get("Reported"), $commander);
 		}
 			if(strtolower($cmd == "reportinfo")){
 				if($sender instanceof Player){
-					if($sender->hasPermission("universe.notify")){
-						if(file_exists("/UniverseMC/Reports/".$args[0].".yml")){
+					if($sender->hasPermission("rc.notify")){
+						if(file_exists("/ReportCore/Reports/".$args[0].".yml")){
 							$config = new Config("/UniverseMC/Reports/".$args[0].".yml", Config::YAML);
 							$sender->sendMessage($this->reportPrefix ."§b=-=-= §cReport Informationen für ".$args[0]." §b=-=-=");
 							$sender->sendMessage($this->reportPrefix ."§cReporter: §5".$config->get("Reporter")."");
@@ -191,13 +191,13 @@ $stringer = str_replace(":als", $report->get("Reported"), $commander);
 			}
 			if(strtolower($cmd == "reports")){
 				if($sender instanceof Player){
-					if($sender->hasPermission("universe.notify")){
-						$files = scandir("/UniverseMC/Reports");
+					if($sender->hasPermission("rc.notify")){
+						$files = scandir("/ReportCore/Reports");
 
 						foreach($files as $report){
 							$filename = str_replace(".yml", "", $report);
 								if($filename != "." && $filename != ".."){
-									$configr = new Config("/UniverseMC/Reports/".$filename.".yml", Config::YAML);
+									$configr = new Config("/ReportCore/Reports/".$filename.".yml", Config::YAML);
 									$reason = $configr->get("Grund");
 									$reported = $configr->get("Reported");
 
@@ -210,22 +210,23 @@ $stringer = str_replace(":als", $report->get("Reported"), $commander);
 		}
 	return true;
 }
+	/**
 public function onPacketR(DataPacketReceiveEvent $event){
 		$packet = $event->getPacket();
 		$player = $event->getPlayer();
 		$name = $player->getName();
 		if($event instanceof ModalFormResponsePacket){
 			if($packet->formId == "7"){
-				$reportc = new Config("/UniverseMC/Reports/".$data.".yml", Config::YAML);
+				$reportc = new Config("/ReportCore/Reports/".$data.".yml", Config::YAML);
 				$reportc->set("Staff", $name);
 				$reportc->set("Status", "Checking");
 				$reportc->save();
-				$staffconfig = new Config("/UniverseMC/Notify/".$name.".yml", Config::YAML);
+				$staffconfig = new Config("/ReportCore/Notify/".$name.".yml", Config::YAML);
 				$staffconfig->set("Report-Modus", true);
 				$staffconfig->set("Spectating", $reportc->get("Reported"));
 				$staffconfig->set("ReportID", $data);
 				$staffconfig->save();
 			}
 		}
-	}
+	}**/
 }
