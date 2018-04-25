@@ -9,7 +9,7 @@ use pocketmine\network\mcpe\protocol\ModalFormRequestPacket;
 use pocketmine\network\mcpe\protocol\ModalFormResponsePacket;
 use pocketmine\{Player, Server};
 use pocketmine\utils\Config;
-use pocketmine\utils\Scheduler;
+use pocketmine\scheduler\PluginTask;
 class Main extends PluginBase implements Listener{
 	public $prefix = "§7[§3System§7]";#
 	public $reportPrefix = "§7[§b§lReportSystem§r§7]";
@@ -239,7 +239,7 @@ class Check extends PluginTask {
         parent::__construct($plugin);
     }
     
-    public function onRun($tick) {
+    public function onRun(int $tick) {
         $new  = scandir("/ReportCore/Reports/");
         $tobc = array_diff($new, $this->oldreports);
         if ($tobc !== []) {
