@@ -1,7 +1,7 @@
 name: ReportCore
-author: Blockstorm
+author: BlockstormPE
 version: 1.0
-api: 3.0.0-ALPHA11
+api: 4.0.0
 main: RC\Main
 commands:
   notify:
@@ -18,3 +18,5 @@ commands:
     description: Aktuelle Report-Informationen
   rpurge:
     description: Lösche alle Reports
+  jumpto:
+    description: jump to an player
